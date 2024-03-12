@@ -1,27 +1,12 @@
-package com.example.helloworldspring;
+package com.example.helloworldspring.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-
-@Entity
-public class BookController {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+public class bookDTO {
     private Long bookId;
-
     private String isbn;
-
     private String title;
-
     private String author;
-
     private String publisher;
-
     private Long year;
-
     private Long availableCopies;
 
     public Long getBookId() {
