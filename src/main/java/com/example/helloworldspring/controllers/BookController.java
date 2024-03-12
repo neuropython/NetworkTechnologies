@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.helloworldspring.dto.BookDTO;
 import com.example.helloworldspring.services.BookService;
 @RestController
-@RequestMapping("/api/book")
+@RequestMapping("/book")
 public class BookController {
 
     private final BookService bookService;

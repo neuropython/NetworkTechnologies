@@ -1,12 +1,6 @@
-package com.example.helloworldspring.entities;
+package com.example.helloworldspring.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class UserDTO {
     private Long userId;
     private String username;
     private String password;
@@ -38,6 +32,14 @@ public class User {
         this.password = password;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String firstName) {
+        this.name = firstName;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -54,11 +56,4 @@ public class User {
         this.role = role;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
