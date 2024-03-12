@@ -1,18 +1,15 @@
 package com.example.helloworldspring.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 @Entity
 public class Reviews {
     @Id
     private Long reviewId;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userId", nullable = false)
     private User user;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bookId", nullable = false)
     private Book book;
     private String review;
@@ -31,6 +28,9 @@ public class Reviews {
     }
 
     public void setUserId(Long userId) {
+        if (this.user == null) {
+            this.user = new User();
+        }
         this.user.setUserId(userId);
     }
 
@@ -39,6 +39,9 @@ public class Reviews {
     }
 
     public void setBookId(Long bookId) {
+        if (this.book == null) {
+            this.book = new Book();
+        }
         this.book.setBookId(bookId);
     }
 
