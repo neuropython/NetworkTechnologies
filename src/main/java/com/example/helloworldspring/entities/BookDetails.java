@@ -1,26 +1,29 @@
 package com.example.helloworldspring.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 
 import java.net.URL;
 @Entity
 public class BookDetails {
     @Id
-    @ManyToOne
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bookId", nullable = false)
     private Book book;
     private String genre;
     private String summary;
-    private URL CoverImageURL;
+    private String CoverImageURL;
 
     public Long getBookId() {
         return book.getBookId();
     }
 
     public void setBookId(Long bookId) {
+        if (this.book == null) {
+            this.book = new Book();
+        }
         this.book.setBookId(bookId);
     }
 
@@ -40,11 +43,11 @@ public class BookDetails {
         this.summary = summary;
     }
 
-    public URL getCoverImageURL() {
+    public String getCoverImageURL() {
         return CoverImageURL;
     }
 
-    public void setCoverImageURL(URL coverImageURL) {
+    public void setCoverImageURL(String coverImageURL) {
         CoverImageURL = coverImageURL;
     }
 
