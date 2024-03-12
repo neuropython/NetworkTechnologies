@@ -4,6 +4,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+
+import java.util.Date;
+
 @Entity
 public class Loans {
     @Id
@@ -14,9 +17,9 @@ public class Loans {
     @ManyToOne
     @JoinColumn(name = "bookId", nullable = false)
     private Book book;
-    private String loanDate;
-    private String returnDate;
-    private String DueDate;
+    private Date loanDate;
+    private Date returnDate;
+    private Date DueDate;
 
     public Long getLoanId() {
         return loanId;
@@ -31,6 +34,9 @@ public class Loans {
     }
 
     public void setUserId(Long userId) {
+        if (this.user == null) {
+            this.user = new User();
+        }
         this.user.setUserId(userId);
     }
 
@@ -39,31 +45,31 @@ public class Loans {
     }
 
     public void setBookId(Long bookId) {
+        if (this.book == null) {
+            this.book = new Book();
+        }
         this.book.setBookId(bookId);
     }
 
-    public String getIssueDate() {
+    public Date getIssueDate() {
         return loanDate;
     }
 
-    public void setIssueDate(String issueDate) {
+    public void setLoanDate(Date issueDate) {
         this.loanDate = issueDate;
     }
 
-    public String getReturnDate() {
+    public Date getReturnDate() {
         return returnDate;
     }
 
-    public void setReturnDate(String returnDate) {
+    public void setReturnDate(Date returnDate) {
         this.returnDate = returnDate;
     }
 
-    public String getStatus() {
+    public Date getStatus() {
         return DueDate;
     }
 
-    public void setStatus(String status) {
-        this.DueDate = status;
-    }
 
 }
