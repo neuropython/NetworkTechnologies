@@ -1,6 +1,6 @@
 package com.example.helloworldspring.dto;
 
-public class bookDTO {
+public class BookDTO {
     private Long bookId;
     private String isbn;
     private String title;
