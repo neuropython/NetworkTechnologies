@@ -6,12 +6,15 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "auth")
 public class AuthEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String username;
     private String password;
     private String email;
+
+
     @Basic
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -65,8 +68,17 @@ public class AuthEntity {
         this.name = name;
     }
 
+
     @OneToOne
     @JoinColumn(name = "userId")
     private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
 
