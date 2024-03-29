@@ -1,5 +1,6 @@
 package com.example.helloworldspring.entities;
 
+import com.example.helloworldspring.commonTypes.UserRole;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +12,9 @@ public class User {
     private String username;
     private String password;
     private String email;
-    private String role;
+    @Basic
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     private String name;
 
     public Long getUserId() {
@@ -46,11 +49,11 @@ public class User {
         this.email = email;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
@@ -61,4 +64,7 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private AuthEntity authEntity;
+
 }

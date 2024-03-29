@@ -1,13 +1,20 @@
-package com.example.helloworldspring.dto;
+package com.example.helloworldspring.entities;
 
 import com.example.helloworldspring.commonTypes.UserRole;
+import jakarta.persistence.*;
 
-public class UserDTO {
+@Entity
+@Table(name = "auth")
+public class AuthEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String username;
     private String password;
     private String email;
-    private String role;
+    @Basic
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
     private String name;
 
     public Long getUserId() {
@@ -34,14 +41,6 @@ public class UserDTO {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String firstName) {
-        this.name = firstName;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -51,10 +50,23 @@ public class UserDTO {
     }
 
     public UserRole getRole() {
-        return UserRole.valueOf(role);
+        return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @OneToOne
+    @JoinColumn(name = "userId")
+    private User user;
 }
+
