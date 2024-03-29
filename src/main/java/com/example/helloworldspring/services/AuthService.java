@@ -5,6 +5,8 @@ import com.example.helloworldspring.dto.RegisterDTO;
 import com.example.helloworldspring.dto.RegisterResponseDTO;
 import com.example.helloworldspring.entities.AuthEntity;
 import com.example.helloworldspring.entities.User;
+import com.example.helloworldspring.exceptionHandlers.CustomException;
+import com.example.helloworldspring.exceptionHandlers.ExceptionCodes;
 import com.example.helloworldspring.repositories.AuthRepository;
 import com.example.helloworldspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +41,10 @@ public class AuthService {
     }
     public void login(LoginDTO dto) {
 
-        AuthEntity authEntity = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new RuntimeException(
-                "User not found")
-        );
+        AuthEntity authEntity = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new
+                CustomException(ExceptionCodes.INVALID_CREDENTIALS));
         if (!authEntity.getPassword().equals(dto.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new CustomException(ExceptionCodes.INVALID_CREDENTIALS);
         }
 
     }
