@@ -1,6 +1,7 @@
 package com.example.helloworldspring.controllers;
 
 import com.example.helloworldspring.dto.LoginDTO;
+import com.example.helloworldspring.dto.LoginResponseDTO;
 import com.example.helloworldspring.dto.RegisterDTO;
 import com.example.helloworldspring.dto.RegisterResponseDTO;
 import com.example.helloworldspring.services.AuthService;
@@ -29,8 +30,9 @@ public class AuthController {
         return new ResponseEntity(dto, HttpStatus.CREATED);
     }
     @PostMapping("/login")
-    public void register(@RequestBody LoginDTO requestBody) {
-        authService.login(requestBody);
+    public ResponseEntity<LoginResponseDTO> register(@RequestBody LoginDTO requestBody) {
+        LoginResponseDTO dto = authService.login(requestBody);
+        return new ResponseEntity(dto, HttpStatus.CREATED);
     }
 
 //    private final AuthService authService;

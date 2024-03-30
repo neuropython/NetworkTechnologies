@@ -1,6 +1,8 @@
 package com.example.helloworldspring.services;
 
+import com.example.helloworldspring.commonTypes.UserRole;
 import com.example.helloworldspring.dto.LoginDTO;
+import com.example.helloworldspring.dto.LoginResponseDTO;
 import com.example.helloworldspring.dto.RegisterDTO;
 import com.example.helloworldspring.dto.RegisterResponseDTO;
 import com.example.helloworldspring.entities.AuthEntity;
@@ -16,36 +18,44 @@ import org.springframework.stereotype.Service;
 public class AuthService {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
+
+    private final JwtService jwtService;
     @Autowired
-    public AuthService(AuthRepository authRepository, UserRepository userRepository) {
+    public AuthService(AuthRepository authRepository, UserRepository userRepository, JwtService jwtService) {
         this.authRepository = authRepository;
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     public RegisterResponseDTO register(RegisterDTO dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
-        User savedUser = userRepository.save(user);
+        userRepository.save(user);
 
         AuthEntity authEntity = new AuthEntity();
         authEntity.setUsername(dto.getUsername());
         authEntity.setPassword(dto.getPassword());
-        authEntity.setUser(savedUser);
+        authEntity.setUser(user);
         authEntity.setRole(dto.getRole());
         authRepository.save(authEntity);
 
-        AuthEntity savedAuthEntity = authRepository.save(authEntity);
+        authRepository.save(authEntity);
 
-        return new RegisterResponseDTO(savedAuthEntity.getUsername(), savedAuthEntity.getRole());
+        return new RegisterResponseDTO(authEntity.getUsername(), authEntity.getRole(), authEntity.getUser().getUserId());
 
     }
-    public void login(LoginDTO dto) {
+    public LoginResponseDTO login(LoginDTO dto) {
 
         AuthEntity authEntity = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new
                 CustomException(ExceptionCodes.INVALID_CREDENTIALS));
         if (!authEntity.getPassword().equals(dto.getPassword())) {
             throw new CustomException(ExceptionCodes.INVALID_CREDENTIALS);
         }
+
+        String token = jwtService.generateToken(authEntity);
+
+        return new LoginResponseDTO(token);
+
 
     }
 }
