@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.function.Function;
 @Service
 public class JwtService {
-    private  String jwtSigningKey="${secret}";
+    private  String jwtSigningKey="sljasljdsakjdnsajsadbjkdkjdbsdbsadjsdksajdksajbdsabkjsdakjdskdbsakbsakjdkjsdbkwdbowqfoqholafaioenfnnhacohnochoncncahocaafo";
     public UserRole extractRole(String token) {
         String roleString =  extractClaim(token, (claims) -> claims.get("role", String.class));
         return UserRole.valueOf(roleString);

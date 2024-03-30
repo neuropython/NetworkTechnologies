@@ -8,6 +8,7 @@ import com.example.helloworldspring.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +26,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterDTO requestBody) {
         RegisterResponseDTO dto = authService.register(requestBody);
         return new ResponseEntity(dto, HttpStatus.CREATED);
     }
     @PostMapping("/login")
+    @PreAuthorize("permitAll()")
     public ResponseEntity<LoginResponseDTO> register(@RequestBody LoginDTO requestBody) {
         LoginResponseDTO dto = authService.login(requestBody);
         return new ResponseEntity(dto, HttpStatus.CREATED);

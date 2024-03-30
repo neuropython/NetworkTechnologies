@@ -12,18 +12,21 @@ import com.example.helloworldspring.exceptionHandlers.ExceptionCodes;
 import com.example.helloworldspring.repositories.AuthRepository;
 import com.example.helloworldspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     private final JwtService jwtService;
     @Autowired
-    public AuthService(AuthRepository authRepository, UserRepository userRepository, JwtService jwtService) {
+    public AuthService(AuthRepository authRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.authRepository = authRepository;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
     }
 
@@ -34,7 +37,7 @@ public class AuthService {
 
         AuthEntity authEntity = new AuthEntity();
         authEntity.setUsername(dto.getUsername());
-        authEntity.setPassword(dto.getPassword());
+        authEntity.setPassword(passwordEncoder.encode(dto.getPassword()));
         authEntity.setUser(user);
         authEntity.setRole(dto.getRole());
         authRepository.save(authEntity);
@@ -48,7 +51,7 @@ public class AuthService {
 
         AuthEntity authEntity = authRepository.findByUsername(dto.getUsername()).orElseThrow(() -> new
                 CustomException(ExceptionCodes.INVALID_CREDENTIALS));
-        if (!authEntity.getPassword().equals(dto.getPassword())) {
+        if (!passwordEncoder.matches(dto.getPassword(), authEntity.getPassword())) {
             throw new CustomException(ExceptionCodes.INVALID_CREDENTIALS);
         }
 
