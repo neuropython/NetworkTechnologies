@@ -12,6 +12,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/bookDetails")
 public class BookDetailsController {
@@ -70,16 +72,16 @@ private final BookRepository bookRepository;
         return bookDetailsService.getBookDetailsByBook(book);
     }
 
-    @PreAuthorize("permitAll()")
     @GetMapping("/genre/{genre}")
-    public @ResponseBody BookDetails getBookDetailsByGenre(@PathVariable String genre){
+    @PreAuthorize("permitAll()")
+    public @ResponseBody List<BookDetails> getBookDetailsByGenre(@PathVariable String genre){
         return bookDetailsService.getBookDetailsByGenre(genre);
     }
 
-    @PreAuthorize("permitAll()")
-    @GetMapping("/author/{author}")
-    public @ResponseBody BookDetails getBookDetailsByAuthor(@PathVariable String author){
-        return bookDetailsService.getBookDetailsByAuthor(author);
-    }
+@PreAuthorize("permitAll()")
+@GetMapping("/author/{author}")
+public @ResponseBody List<BookDetails> getBookDetailsByAuthor(@PathVariable String author){
+    return bookDetailsService.getBookDetailsByAuthor(author);
+}
 
 }

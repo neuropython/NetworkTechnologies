@@ -7,10 +7,15 @@ import com.example.helloworldspring.exceptionHandlers.CustomException;
 import com.example.helloworldspring.exceptionHandlers.ExceptionCodes;
 import com.example.helloworldspring.repositories.BookDetailsRepository;
 import com.example.helloworldspring.repositories.BookRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 public class BookDetailsService {
@@ -18,6 +23,8 @@ public class BookDetailsService {
     private BookDetailsRepository bookDetailsRepository;
     @Autowired
     private BookRepository bookRepository;
+    @PersistenceContext
+    private EntityManager entityManager;
 
 
 
@@ -59,17 +66,19 @@ public class BookDetailsService {
     }
 
 
-    public BookDetails getBookDetailsByGenre(String genre){
-        return bookDetailsRepository.findByGenre(genre);
+    public List<BookDetails> getBookDetailsByGenre(String genre){
+        TypedQuery<BookDetails> query = entityManager.createQuery("SELECT bd FROM BookDetails bd WHERE bd.genre = :genre", BookDetails.class);
+        query.setParameter("genre", genre);
+        return query.getResultList();
     }
 
-    public BookDetails getBookDetailsByAuthor(String author){
-        BookDetails findByAuthor = bookDetailsRepository.findByBook_Author(author);
-        if(findByAuthor == null){
+    public List<BookDetails> getBookDetailsByAuthor(String author){
+        List<BookDetails> findByAuthor = bookDetailsRepository.findAllByBook_Author(author);
+        if(findByAuthor.isEmpty()){
             throw new CustomException(ExceptionCodes.BOOK_AUTHOR_NOT_FOUND);
         }
 
-        return bookDetailsRepository.findByBook_Author(author);
+        return findByAuthor;
     }
 
 

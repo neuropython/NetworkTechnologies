@@ -1,6 +1,7 @@
 package com.example.helloworldspring.entities;
 
 import com.example.helloworldspring.repositories.BookRepository;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,6 +12,11 @@ public class BookDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @JsonIgnore
+    public Book getBook() {
+        return book;
+    }
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bookId", nullable = false)
@@ -47,9 +53,6 @@ public class BookDetails {
         CoverImageURL = coverImageURL;
     }
 
-    public Book getBook() {
-        return book;
-    }
     public Long getId() {
         return id;
     }
