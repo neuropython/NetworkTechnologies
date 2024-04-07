@@ -1,9 +1,7 @@
 package com.example.helloworldspring.controllers;
 
-import com.example.helloworldspring.dto.LoginDTO;
-import com.example.helloworldspring.dto.LoginResponseDTO;
-import com.example.helloworldspring.dto.RegisterDTO;
-import com.example.helloworldspring.dto.RegisterResponseDTO;
+import com.example.helloworldspring.dto.*;
+import com.example.helloworldspring.entities.BlacklistedTokens;
 import com.example.helloworldspring.services.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,7 +24,6 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/register")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterDTO requestBody) {
         RegisterResponseDTO dto = authService.register(requestBody);
         return new ResponseEntity(dto, HttpStatus.CREATED);
@@ -37,29 +34,19 @@ public class AuthController {
         LoginResponseDTO dto = authService.login(requestBody);
         return new ResponseEntity(dto, HttpStatus.CREATED);
     }
+    /**
+     * Logout - currently logout method doesnt work because
+     * of not properly saving the token in the database
+     * @param requestBody
+     * @return
+     */
 
-//    private final AuthService authService;
-//
-//    @Autowired
-//    public AuthController(AuthService authService) {
-//        this.authService = authService;
-//    }
-//
-//
-//    @PostMapping("/register")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public ResponseEntity<RegisterResponseDto> register(@Valid @RequestBody RegisterDto requestBody, BindingResult bindingResult) {
-//        CheckBindingExceptions.check(bindingResult);
-//        RegisterResponseDto dto = authService.register(requestBody);
-//        return new ResponseEntity<>(dto, HttpStatus.CREATED);
-//    }
-
-//    @PostMapping("/login")
-//    @PreAuthorize("permitAll")
-//    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginDto dto, BindingResult bindingResult) {
-//        CheckBindingExceptions.check(bindingResult);
-//        LoginResponseDto responseDto = authService.login(dto);
-//        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
-//    }
+    @PostMapping("/logout")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity logout(@RequestBody BlacklistedTokenDTO requestBody) {
+        System.out.println(requestBody.getToken());
+        authService.logout(requestBody.getToken());
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 }

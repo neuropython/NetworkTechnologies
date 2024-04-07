@@ -1,19 +1,19 @@
 package com.example.helloworldspring.services;
 
 import com.example.helloworldspring.commonTypes.UserRole;
-import com.example.helloworldspring.dto.LoginDTO;
-import com.example.helloworldspring.dto.LoginResponseDTO;
-import com.example.helloworldspring.dto.RegisterDTO;
-import com.example.helloworldspring.dto.RegisterResponseDTO;
+import com.example.helloworldspring.dto.*;
 import com.example.helloworldspring.entities.AuthEntity;
+import com.example.helloworldspring.entities.BlacklistedTokens;
 import com.example.helloworldspring.entities.User;
 import com.example.helloworldspring.exceptionHandlers.CustomException;
 import com.example.helloworldspring.exceptionHandlers.ExceptionCodes;
 import com.example.helloworldspring.repositories.AuthRepository;
+import com.example.helloworldspring.repositories.BlacklistedTokensRepository;
 import com.example.helloworldspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class AuthService {
@@ -22,6 +22,9 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private final JwtService jwtService;
+    @Autowired
+    private BlacklistedTokensRepository blacklistedTokensRepository;
+
     @Autowired
     public AuthService(AuthRepository authRepository, UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService) {
         this.authRepository = authRepository;
@@ -58,7 +61,12 @@ public class AuthService {
         String token = jwtService.generateToken(authEntity);
 
         return new LoginResponseDTO(token);
-
-
     }
+    @Transactional
+    public void logout(String token) {
+        BlacklistedTokens blacklistedToken = new BlacklistedTokens();
+        blacklistedToken.setToken(token);
+        blacklistedTokensRepository.save(blacklistedToken);
+    }
+
 }

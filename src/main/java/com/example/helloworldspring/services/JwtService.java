@@ -1,13 +1,17 @@
 package com.example.helloworldspring.services;
 
 import com.example.helloworldspring.commonTypes.UserRole;
+import com.example.helloworldspring.dto.BlacklistedTokenDTO;
 import com.example.helloworldspring.entities.AuthEntity;
+import com.example.helloworldspring.entities.BlacklistedTokens;
 import com.example.helloworldspring.exceptionHandlers.CustomException;
 import com.example.helloworldspring.exceptionHandlers.ExceptionCodes;
+import com.example.helloworldspring.repositories.BlacklistedTokensRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
@@ -27,11 +31,21 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetail);
     }
 
+    // other fields...
+
+    @Autowired
+    private BlacklistedTokensRepository blacklistedTokensRepository;
+
     public boolean isTokenValid(String token) {
-        try {
-            return !isTokenExpired(token);
-        } catch (Exception e) {
-            throw new CustomException(ExceptionCodes.INVALID_TOKEN);
+        BlacklistedTokens blacklistedToken = blacklistedTokensRepository.findByToken(token);
+        if (blacklistedToken != null) {
+            throw new CustomException(ExceptionCodes.TOKEN_BLACKLISTED);
+        } else {
+            try {
+                return !isTokenExpired(token);
+            } catch (Exception e) {
+                throw new CustomException(ExceptionCodes.INVALID_TOKEN);
+            }
         }
     }
 
@@ -67,6 +81,5 @@ public class JwtService {
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtSigningKey);
         return Keys.hmacShaKeyFor(keyBytes);
-
     }
 }

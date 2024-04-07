@@ -5,7 +5,9 @@ public enum ExceptionCodes {
     USER_ALREADY_EXISTS("User already exists"),
     INVALID_CREDENTIALS("Invalid credentials"),
     INVALID_TOKEN("Invalid token"),
-    INVALID_ROLE("Invalid role");
+    INVALID_ROLE("Invalid role"),
+
+    TOKEN_BLACKLISTED("Token is blacklisted");
 
     private final String message;
 
