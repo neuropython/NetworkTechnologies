@@ -7,7 +7,9 @@ public enum ExceptionCodes {
     INVALID_TOKEN("Invalid token"),
     INVALID_ROLE("Invalid role"),
 
-    TOKEN_BLACKLISTED("Token is blacklisted");
+    TOKEN_BLACKLISTED("Token is blacklisted"),
+
+    BOOK_NOT_FOUND("Book not found");
 
     private final String message;
 

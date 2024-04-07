@@ -1,11 +1,16 @@
 package com.example.helloworldspring.controllers;
 
 import com.example.helloworldspring.entities.Book;
+import com.example.helloworldspring.exceptionHandlers.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.example.helloworldspring.dto.BookDTO;
 import com.example.helloworldspring.services.BookService;
+
+import static com.example.helloworldspring.exceptionHandlers.ExceptionCodes.BOOK_NOT_FOUND;
+
 @RestController
 @RequestMapping("/book")
 public class BookController {
@@ -13,33 +18,33 @@ public class BookController {
     private final BookService bookService;
 
     @Autowired
-    public BookController(BookService bookService){
+    public BookController(BookService bookService) {
         this.bookService = bookService;
     }
 
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED) //code 201
-    public @ResponseBody Book addBook(@RequestBody BookDTO bookDto){
+    public @ResponseBody Book addBook(@RequestBody BookDTO bookDto) {
         if (bookDto.getIsbn() == null || bookDto.getTitle() == null || bookDto.getAuthor() == null
                 || bookDto.getPublisher() == null || bookDto.getYear() == null
-                || bookDto.getAvailableCopies() == null){
+                || bookDto.getAvailableCopies() == null) {
             StringBuilder errorMessage = new StringBuilder("Invalid book data. Missing or null fields: ");
-            if (bookDto.getIsbn() == null){
+            if (bookDto.getIsbn() == null) {
                 errorMessage.append("isbn, ");
             }
-            if (bookDto.getTitle() == null){
+            if (bookDto.getTitle() == null) {
                 errorMessage.append("title, ");
             }
-            if (bookDto.getAuthor() == null){
+            if (bookDto.getAuthor() == null) {
                 errorMessage.append("author, ");
             }
-            if (bookDto.getPublisher() == null){
+            if (bookDto.getPublisher() == null) {
                 errorMessage.append("publisher, ");
             }
-            if (bookDto.getYear() == null){
+            if (bookDto.getYear() == null) {
                 errorMessage.append("year, ");
             }
-            if (bookDto.getAvailableCopies() == null){
+            if (bookDto.getAvailableCopies() == null) {
                 errorMessage.append("availableCopies, ");
             }
             errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
@@ -50,7 +55,31 @@ public class BookController {
     }
 
     @GetMapping("/all")
-    public @ResponseBody Iterable<Book> getAllBooks(){
+    @PreAuthorize("permitAll()")
+    public @ResponseBody Iterable<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
+
+    @GetMapping("/delete/{isbn}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public @ResponseBody void deleteBook(@PathVariable String isbn) {
+        bookService.deleteBook(isbn);
+    }
+
+    @GetMapping("/get/{isbn}")
+    @PreAuthorize("permitAll()")
+    public @ResponseBody Book getBookByIsbn(@PathVariable String isbn) {
+        Book book = bookService.getBookByIsbn(isbn);
+        if (book == null) {
+            throw new CustomException(BOOK_NOT_FOUND);
+        }
+        return book;
+    }
+    @GetMapping("/update/{isbn}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public @ResponseBody Book updateBook(@PathVariable String isbn, @RequestBody BookDTO bookDto) {
+        return bookService.updateBook(isbn, bookDto);
+    }
+
+
 }

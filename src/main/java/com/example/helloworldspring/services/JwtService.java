@@ -37,17 +37,13 @@ public class JwtService {
     private BlacklistedTokensRepository blacklistedTokensRepository;
 
     public boolean isTokenValid(String token) {
-        BlacklistedTokens blacklistedToken = blacklistedTokensRepository.findByToken(token);
-        if (blacklistedToken != null) {
-            throw new CustomException(ExceptionCodes.TOKEN_BLACKLISTED);
-        } else {
             try {
                 return !isTokenExpired(token);
             } catch (Exception e) {
                 throw new CustomException(ExceptionCodes.INVALID_TOKEN);
             }
         }
-    }
+
 
     private boolean isTokenExpired(String token) {
         return extractExpirationDate(token).before(new Date());

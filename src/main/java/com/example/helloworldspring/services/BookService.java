@@ -25,5 +25,25 @@ public class BookService {
         return bookRepository.save(book);
     }
 
+    public Book getBookByIsbn(String isbn){
+        return bookRepository.findByIsbn(isbn);
+    }
+
+    public Book updateBook(String isbn, BookDTO bookDTO){
+        Book book = bookRepository.findByIsbn(isbn);
+        book.setTitle(bookDTO.getTitle());
+        book.setAuthor(bookDTO.getAuthor());
+        book.setPublisher(bookDTO.getPublisher());
+        book.setYear(bookDTO.getYear());
+        book.setAvailableCopies(bookDTO.getAvailableCopies());
+        return bookRepository.save(book);
+    }
+
+    public void deleteBook(String isbn){
+        Book book = bookRepository.findByIsbn(isbn);
+        bookRepository.delete(book);
+    }
+
+
 
 }
