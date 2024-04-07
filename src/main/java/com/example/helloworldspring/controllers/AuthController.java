@@ -23,11 +23,21 @@ public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * Register - only admin can register new users
+     * @return
+     */
     @PostMapping("/register")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<RegisterResponseDTO> register(@RequestBody RegisterDTO requestBody) {
         RegisterResponseDTO dto = authService.register(requestBody);
         return new ResponseEntity(dto, HttpStatus.CREATED);
     }
+
+    /**
+     * Login - everyone can log in
+     * @return
+     */
     @PostMapping("/login")
     @PreAuthorize("permitAll()")
     public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginDTO requestBody) {
@@ -35,9 +45,8 @@ public class AuthController {
         return new ResponseEntity(dto, HttpStatus.CREATED);
     }
     /**
-     * Logout - currently logout method doesnt work because
+     * Logout - currently logout method doesn't work because
      * of not properly saving the token in the database
-     * @param requestBody
      * @return
      */
 

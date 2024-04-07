@@ -21,7 +21,10 @@ public class BookController {
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
-
+    /**
+     * Add a new book to the library
+     * @return
+     */
     @PostMapping("/add")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(code = HttpStatus.CREATED) //code 201
@@ -54,19 +57,29 @@ public class BookController {
 
         return bookService.addBook(bookDto);
     }
-
+    /**
+     * Get all books from the library
+     * @return
+     */
     @GetMapping("/all")
     @PreAuthorize("permitAll()")
     public @ResponseBody Iterable<Book> getAllBooks() {
         return bookService.getAllBooks();
     }
-
+    /**
+     * Delete a book from the library
+     * @param isbn
+     */
     @DeleteMapping("/delete/{isbn}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody void deleteBook(@PathVariable String isbn) {
         bookService.deleteBook(isbn);
     }
-
+    /**
+     * Get a book by its ISBN
+     * @param isbn
+     * @return
+     */
     @GetMapping("/get/{isbn}")
     @PreAuthorize("permitAll()")
     public @ResponseBody Book getBookByIsbn(@PathVariable String isbn) {
@@ -76,6 +89,11 @@ public class BookController {
         }
         return book;
     }
+    /**
+     * Update a book by its ISBN
+     * @param isbn
+     * @return
+     */
     @PatchMapping("/update/{isbn}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody Book updateBook(@PathVariable String isbn, @RequestBody BookDTO bookDto) {

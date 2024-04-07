@@ -2,7 +2,7 @@ package com.example.helloworldspring.exceptionHandlers;
 
 public enum ExceptionCodes {
     USER_NOT_FOUND("User not found"),
-    USER_ALREADY_EXISTS("User already exists"),
+    USER_ALREADY_EXISTS("User already exists with that username"),
     INVALID_CREDENTIALS("Invalid credentials"),
     INVALID_TOKEN("Invalid token"),
     INVALID_ROLE("Invalid role"),

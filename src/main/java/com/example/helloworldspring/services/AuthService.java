@@ -34,6 +34,7 @@ public class AuthService {
     }
 
     public RegisterResponseDTO register(RegisterDTO dto) {
+        try {
         User user = new User();
         user.setEmail(dto.getEmail());
         user.setName(dto.getName());
@@ -53,6 +54,9 @@ public class AuthService {
         authRepository.save(authEntity);
 
         return new RegisterResponseDTO(authEntity.getUsername(), authEntity.getRole(), authEntity.getUser().getUserId());
+        } catch (Exception e) {
+            throw new CustomException(ExceptionCodes.USER_ALREADY_EXISTS);
+        }
 
     }
     public LoginResponseDTO login(LoginDTO dto) {

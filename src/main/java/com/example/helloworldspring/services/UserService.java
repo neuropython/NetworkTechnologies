@@ -1,6 +1,7 @@
 package com.example.helloworldspring.services;
 
 import com.example.helloworldspring.dto.UserDTO;
+import com.example.helloworldspring.entities.AuthEntity;
 import com.example.helloworldspring.entities.User;
 import com.example.helloworldspring.repositories.AuthRepository;
 import com.example.helloworldspring.repositories.UserRepository;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -39,10 +42,15 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteUser(String username) {
-        Integer id = Math.toIntExact(authRepository.findByUsername(username).get().getId());
+public void deleteUser(String username) {
+    Optional<AuthEntity> optionalAuthEntity = authRepository.findByUsername(username);
+    if (optionalAuthEntity.isPresent()) {
+        Integer id = Math.toIntExact(optionalAuthEntity.get().getId());
         userRepository.deleteById(id);
+    } else {
+        throw new NoSuchElementException("No user found with username: " + username);
     }
+}
     public User getUser(String username) {
         return userRepository.findByUsername(username);
     }

@@ -20,18 +20,27 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
+    /**
+     * Get me - get the current user
+     * @return
+     */
     @GetMapping("/me")
     public ResponseEntity getMe(Principal principal) {
         String username = principal.getName();
         return ResponseEntity.ok(userService.getUser(username));
     }
-
+    /**
+     * Get all users
+     * @return
+     */
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
+    /**
+     * Delete me - delete the current user
+     */
     @DeleteMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity deleteUser(Principal principal) {
@@ -40,17 +49,25 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Update me - update the current user
+     * @return
+     */
     @PatchMapping("/me")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity updateUser(Principal principal, @RequestBody UserDTO userDTO) {
         String username = principal.getName();
         return ResponseEntity.ok(userService.patchUser(username, userDTO));
     }
-//
-//    @DeleteMapping("/{username}")
-//    @PreAuthorize("hasRole('ADMIN')")
-//    public ResponseEntity deleteUser(@PathVariable String username) {
-//        userService.deleteUser(username);
-//        return ResponseEntity.ok().build();
-//    }
+    /**
+     * Delete user by username
+     * @param username
+     * @return
+     */
+    @DeleteMapping("/{username}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity deleteUser(@PathVariable String username) {
+        userService.deleteUser(username);
+        return ResponseEntity.ok().build();
+    }
 }

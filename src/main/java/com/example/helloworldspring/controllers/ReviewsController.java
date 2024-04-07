@@ -20,12 +20,19 @@ public class ReviewsController {
         this.reviewsService = reviewsService;
     }
 
+    /**
+     * Get all reviews
+     * @return
+     */
     @GetMapping("/all")
     @PreAuthorize("permitAll()")
     public @ResponseBody Iterable<Reviews> getAllReviews(){
         return reviewsService.getAllReviews();
     }
-
+    /**
+     * Add a new review
+     * @return
+     */
     @PostMapping("/add")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(code = HttpStatus.CREATED)
@@ -33,25 +40,39 @@ public class ReviewsController {
 
         return reviewsService.addReviews(reviewsDTO, principal.getName());
     }
-
+    /**
+     * Get review by id
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("permitAll()")
     public @ResponseBody Reviews getReviewById(@PathVariable Long id){
         return reviewsService.getReviewById(id);
     }
+    /**
+     * Delete review by id
+     * @param id
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteReviewById(@PathVariable Long id, Principal principal){
         reviewsService.deleteReviewById(id, principal.getName());
     }
-
+    /**
+     * Update review by id
+     * @param id
+     */
     @PatchMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
     public void updateReviewById(@PathVariable Long id, @RequestBody ReviewsDTO reviewsDTO, Principal principal){
         reviewsService.updateReviewById(id, reviewsDTO, principal.getName());
     }
-
+    /**
+     * Get my reviews
+     * @return
+     */
     @GetMapping("/mine")
     @PreAuthorize("isAuthenticated()")
     public @ResponseBody Iterable<Reviews> getMyReviews(Principal principal){

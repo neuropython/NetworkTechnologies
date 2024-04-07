@@ -21,31 +21,50 @@ public class LoansController {
     public LoansController(LoansService loansService){
         this.loansService = loansService;
     }
-
+    /**
+     * Get all loans
+     * @return
+     */
     @GetMapping("/all")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody Iterable<Loans> getAllLoans(){
         return loansService.getAllLoans();
     }
+    /**
+     * Add a new loan
+     * @return
+     */
     @PostMapping("/add")
     @ResponseStatus(code = HttpStatus.CREATED)
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody Loans addLoans(@RequestBody LoansDTO loansDTO){
         return loansService.addLoans(loansDTO);
     }
-
+    /**
+     * Get loan by id
+     * @param id
+     * @return
+     */
     @GetMapping("/id/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(code = HttpStatus.OK)
     public @ResponseBody Loans getLoans(@PathVariable Long id){
         return loansService.getLoan(id);
     }
+    /**
+     * Delete loan by id
+     * @param id
+     */
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteLoans(@PathVariable Long id){
         loansService.deleteLoan(id);
     }
-
+    /**
+     * Update loan by id
+     * @param id
+     * @return
+     */
     @PatchMapping("/{id}")
     public ResponseEntity<Loans> updateLoans(@PathVariable Long id, @RequestBody LoansDTO loansDTO){
         try {
@@ -55,12 +74,20 @@ public class LoansController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+    /**
+     * Get loans by user id
+     * @param userId
+     * @return
+     */
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody Iterable<Loans> getLoansByUserId(@PathVariable Long userId){
         return loansService.getLoansByUserId(userId);
     }
-
+    /**
+     * Get loans by user auth token
+     * @return
+     */
     @GetMapping("/mine")
     @PreAuthorize("isAuthenticated()")
     public @ResponseBody Iterable<Loans> getMyLoans(Principal principal){
