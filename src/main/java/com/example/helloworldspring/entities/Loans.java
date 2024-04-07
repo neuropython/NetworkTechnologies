@@ -16,6 +16,38 @@ public class Loans {
     @JoinColumn(name = "bookId", nullable = false)
     private Book book;
     private Date loanDate;
+
+    private Boolean borrowed = true;
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public Date getLoanDate() {
+        return loanDate;
+    }
+
+    public Date getDueDate() {
+        return DueDate;
+    }
+
+    public void setDueDate(Date dueDate) {
+        DueDate = dueDate;
+    }
+
     private Date returnDate;
     private Date DueDate;
 
@@ -65,8 +97,12 @@ public class Loans {
         this.returnDate = returnDate;
     }
 
-    public Date getStatus() {
-        return DueDate;
+    public Boolean getStatus() {
+        return borrowed;
+    }
+
+    public void setStatus(Boolean status) {
+        this.borrowed = status;
     }
 
 

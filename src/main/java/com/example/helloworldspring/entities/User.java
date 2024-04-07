@@ -1,6 +1,9 @@
 package com.example.helloworldspring.entities;
 
 import com.example.helloworldspring.commonTypes.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 @Entity
@@ -17,6 +20,7 @@ public class User {
     private UserRole role;
     private String name;
 
+    @JsonIgnore
     public Long getUserId() {
         return userId;
     }
@@ -25,6 +29,7 @@ public class User {
         this.userId = userId;
     }
 
+    @JsonIgnore
     public String getUsername() {
         return username;
     }
@@ -33,6 +38,7 @@ public class User {
         this.username = username;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -41,6 +47,8 @@ public class User {
         this.password = password;
     }
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonProperty("email_to_user")
     public String getEmail() {
         return email;
     }
@@ -49,6 +57,7 @@ public class User {
         this.email = email;
     }
 
+    @JsonIgnore
     public UserRole getRole() {
         return role;
     }
@@ -57,6 +66,7 @@ public class User {
         this.role = role;
     }
 
+    @JsonIgnore
     public String getName() {
         return name;
     }
@@ -64,7 +74,17 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private AuthEntity authEntity;
+
+    @JsonIgnore
+    public AuthEntity getAuthEntity() {
+        return authEntity;
+    }
+
+    public void setAuthEntity(AuthEntity authEntity) {
+        this.authEntity = authEntity;
+    }
 
 }

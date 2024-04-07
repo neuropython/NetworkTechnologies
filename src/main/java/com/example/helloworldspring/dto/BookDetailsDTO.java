@@ -34,7 +34,6 @@ public class BookDetailsDTO {
     private String coverImageURL;
 
     public Long getBookId() {
-
         return bookId;
     }
 

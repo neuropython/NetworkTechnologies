@@ -22,8 +22,15 @@ public enum ExceptionCodes {
     BOOK_DETAILS_NOT_FOUND("Book details not found"),
 
     BOOK_DETAILS_ALREADY_EXISTS("Book details already exists"),
+    LOAN_WITH_ID_NOT_FOUND("Loan with id not found"),
+    BOOK_AUTHOR_NOT_FOUND("Book author not found"),
+    BOOK_WITH_ID_NOT_FOUND("Book with id not found"),
+    LOAN_DATE_AFTER_DUE_DATE("Loan date is after due date"),
+    USER_HAS_MAX_LOANS("User has max loans");
 
-    BOOK_AUTHOR_NOT_FOUND("Book author not found");
+
+
+
 
 
     private final String message;
