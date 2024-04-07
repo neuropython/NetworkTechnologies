@@ -6,6 +6,8 @@ public class ReviewsDTO {
     private Long userId;
     private String review;
 
+    private int rating;
+
     public Long getReviewId() {
         return reviewId;
     }
@@ -37,4 +39,13 @@ public class ReviewsDTO {
     public void setReview(String review) {
         this.review = review;
     }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
 }

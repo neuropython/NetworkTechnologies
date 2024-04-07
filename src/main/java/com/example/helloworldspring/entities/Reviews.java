@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 @Entity
 public class Reviews {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long reviewId;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "userId", nullable = false)
@@ -60,4 +61,27 @@ public class Reviews {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
+
+    public User getUser() {
+        return user;
+    }
+    public Book getBook() {
+        return book;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+
+
+
 }
