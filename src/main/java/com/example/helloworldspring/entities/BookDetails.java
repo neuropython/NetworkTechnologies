@@ -1,10 +1,13 @@
 package com.example.helloworldspring.entities;
 
+import com.example.helloworldspring.repositories.BookRepository;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.URL;
 @Entity
 public class BookDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,13 +21,6 @@ public class BookDetails {
 
     public Long getBookId() {
         return book.getBookId();
-    }
-
-    public void setBookId(Long bookId) {
-        if (this.book == null) {
-            this.book = new Book();
-        }
-        this.book.setBookId(bookId);
     }
 
     public String getGenre() {
@@ -51,4 +47,21 @@ public class BookDetails {
         CoverImageURL = coverImageURL;
     }
 
+    public Book getBook() {
+        return book;
+    }
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setBookId(Book book) {
+        this.book.setBookId(book.getBookId());
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
+    }
 }

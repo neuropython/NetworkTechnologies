@@ -1,7 +1,5 @@
 package com.example.helloworldspring.dto;
 
-import java.net.URL;
-
 public class BookDetailsDTO {
 
     private Long bookId;

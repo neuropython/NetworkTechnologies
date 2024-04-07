@@ -15,7 +15,16 @@ public enum ExceptionCodes {
 
     BOOK_NOT_AVAILABLE("Book not available"),
 
-    BOOK_CANNOT_HAVE_NEGATIVE_AVAILABLE_COPIES("Book cannot have negative available copies");
+    BOOK_CANNOT_HAVE_NEGATIVE_AVAILABLE_COPIES("Book cannot have negative available copies"),
+
+    GENRE_DOES_NOT_EXIST("Genre does not exist"),
+
+    BOOK_DETAILS_NOT_FOUND("Book details not found"),
+
+    BOOK_DETAILS_ALREADY_EXISTS("Book details already exists"),
+
+    BOOK_AUTHOR_NOT_FOUND("Book author not found");
+
 
     private final String message;
 
