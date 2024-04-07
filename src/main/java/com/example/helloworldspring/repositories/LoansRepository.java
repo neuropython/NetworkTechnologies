@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LoansRepository extends CrudRepository<Loans, Integer> {
     long countByUser(User user);
+    Iterable<Loans> findByUser(User user);
 }

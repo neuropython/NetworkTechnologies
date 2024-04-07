@@ -5,6 +5,7 @@ import com.example.helloworldspring.entities.Book;
 import com.example.helloworldspring.entities.User;
 import com.example.helloworldspring.exceptionHandlers.CustomException;
 import com.example.helloworldspring.exceptionHandlers.ExceptionCodes;
+import com.example.helloworldspring.repositories.AuthRepository;
 import com.example.helloworldspring.repositories.BookRepository;
 import com.example.helloworldspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class LoansService {
 
     @Autowired
     private BookRepository bookRepository;
+
+    @Autowired
+    private AuthRepository authRepository;
 
     public Iterable<Loans> getAllLoans(){
         return loansRepository.findAll();
@@ -94,5 +98,15 @@ public Loans updateLoans(Long id, LoansDTO loansDTO) {
         }
         return loan.get();
     }
+    public Iterable<Loans> getLoansByUserId(Long userId) {
+        Optional<User> user = userRepository.findById(Math.toIntExact(userId));
+        if (user.isEmpty()) {
+            throw new CustomException(ExceptionCodes.USER_NOT_FOUND);
+        }
+        return loansRepository.findByUser(user.get());
+    }
+//    public Iterable<Loans> getLonsRelatedToMe() {
+//        return loansRepository.findByUser(authRepository.getLoggedInUser());
+//    }
 
 }

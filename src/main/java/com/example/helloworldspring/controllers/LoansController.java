@@ -38,11 +38,6 @@ public class LoansController {
     public @ResponseBody Loans getLoans(@PathVariable Long id){
         return loansService.getLoan(id);
     }
-//
-//    @GetMapping("/user/{userId}")
-//    public @ResponseBody Iterable<Loans> getLoansByUser(@PathVariable Long userId){
-//        return loansService.getLoansByUser(userId);
-//    }
     @DeleteMapping("/{id}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteLoans(@PathVariable Long id){
@@ -58,6 +53,12 @@ public class LoansController {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
     }
+    @GetMapping("/user/{userId}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public @ResponseBody Iterable<Loans> getLoansByUserId(@PathVariable Long userId){
+        return loansService.getLoansByUserId(userId);
+    }
+
 //
 
 }
