@@ -9,7 +9,13 @@ public enum ExceptionCodes {
 
     TOKEN_BLACKLISTED("Token is blacklisted"),
 
-    BOOK_NOT_FOUND("Book not found");
+    BOOK_NOT_FOUND("Book not found"),
+
+    BOOK_ALREADY_EXISTS("Book with that ISBN exists"),
+
+    BOOK_NOT_AVAILABLE("Book not available"),
+
+    BOOK_CANNOT_HAVE_NEGATIVE_AVAILABLE_COPIES("Book cannot have negative available copies");
 
     private final String message;
 
