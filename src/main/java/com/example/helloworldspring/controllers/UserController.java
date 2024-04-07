@@ -28,4 +28,10 @@ public class UserController {
         String username = principal.getName();
         return ResponseEntity.ok(userService.getUser(username));
     }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity getAllUsers() {
+        return ResponseEntity.ok(userService.getAllUsers());
+    }
 }

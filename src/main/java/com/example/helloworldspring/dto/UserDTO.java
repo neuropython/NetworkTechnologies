@@ -1,21 +1,18 @@
 package com.example.helloworldspring.dto;
 
 import com.example.helloworldspring.commonTypes.UserRole;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class UserDTO {
+    @JsonIgnore
     private Long userId;
     private String username;
+    @JsonIgnore
     private String password;
     private String email;
     private String role;
     private String name;
 
-
-public UserDTO(String username, String email, String name) {
-    this.username = username;
-    this.email = email;
-    this.name = name;
-}
 
     public Long getUserId() {
         return userId;
@@ -57,8 +54,8 @@ public UserDTO(String username, String email, String name) {
         this.email = email;
     }
 
-    public UserRole getRole() {
-        return UserRole.valueOf(role);
+    public String getRole() {
+        return UserRole.valueOf(role).toString();
     }
 
     public void setRole(String role) {
