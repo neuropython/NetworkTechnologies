@@ -46,6 +46,25 @@ public class ReviewsService {
                 .orElseThrow(() -> new CustomException(ExceptionCodes.REVIEW_NOT_FOUND));
     }
 
+    public void deleteReviewById(Long id, String username){
+        Reviews review = reviewsRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new CustomException(ExceptionCodes.REVIEW_NOT_FOUND));
+        if (!review.getUser().getUsername().equals(username)) {
+            throw new CustomException(ExceptionCodes.UNAUTHORIZED);
+        }
+        reviewsRepository.delete(review);
+    }
+
+    public void updateReviewById(Long id, ReviewsDTO reviewsDTO, String username){
+        Reviews review = reviewsRepository.findById(Math.toIntExact(id))
+                .orElseThrow(() -> new CustomException(ExceptionCodes.REVIEW_NOT_FOUND));
+        if (!review.getUser().getUsername().equals(username)) {
+            throw new CustomException(ExceptionCodes.UNAUTHORIZED);
+        }
+        review.setRating(reviewsDTO.getRating());
+        review.setReview(reviewsDTO.getReview());
+        reviewsRepository.save(review);
+    }
 //    public Iterable<Reviews> getReviewsByBookId(Long bookId){
 //        return reviewsRepository.findByBookId(bookId);
 //    }

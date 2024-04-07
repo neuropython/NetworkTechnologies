@@ -39,5 +39,11 @@ public class ReviewsController {
     public @ResponseBody Reviews getReviewById(@PathVariable Long id){
         return reviewsService.getReviewById(id);
     }
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void deleteReviewById(@PathVariable Long id, Principal principal){
+        reviewsService.deleteReviewById(id, principal.getName());
+    }
 
 }
