@@ -4,9 +4,11 @@ import com.example.helloworldspring.dto.UserDTO;
 import com.example.helloworldspring.entities.User;
 import com.example.helloworldspring.repositories.AuthRepository;
 import com.example.helloworldspring.repositories.UserRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,29 +38,35 @@ public class UserService {
         return userDTOs;
     }
 
-
-    public void deleteUser(Integer userId) {
-        userRepository.deleteById(userId);
+    @Transactional
+    public void deleteUser(String username) {
+        Integer id = Math.toIntExact(authRepository.findByUsername(username).get().getId());
+        userRepository.deleteById(id);
     }
     public User getUser(String username) {
         return userRepository.findByUsername(username);
     }
 
-//    public UserDTO patchUser(String username, UserDTO userDTO) {
-//        User user = userRepository.findByUsername(username);
-//        if (userDTO.getName() != null) {
-//            user.setName(userDTO.getName());
-//        }
-//        if (userDTO.getEmail() != null) {
-//            user.setEmail(userDTO.getEmail());
-//        }
-//        if (userDTO.getUsername() != null) {
-//            user.setUsername(userDTO.getUsername());
-//        }
-//        userRepository.save(user);
-//        return new UserDTO(user.getUsername(), user.getEmail(), user.getName());
-//    }
-//
+    @Transactional
+    public UserDTO patchUser(String username, UserDTO userDTO) {
+        User user = userRepository.findByUsername(username);
+        if (userDTO.getName() != null) {
+            user.setName(userDTO.getName());
+        }
+        if (userDTO.getEmail() != null) {
+            user.setEmail(userDTO.getEmail());
+        }
+        if (userDTO.getUsername() != null) {
+            user.setUsername(userDTO.getUsername());
+        }
+        userRepository.save(user);
+        userDTO.setName(user.getName());
+        userDTO.setEmail(user.getEmail());
+        userDTO.setUsername(user.getUsername());
+        userDTO.setRole(user.getRole().toString());
+        return userDTO;
+    }
+
 //    public UserDTO DeleteUser(String username) {
 //        User user = userRepository.findByUsername(username);
 //        userRepository.delete(user);

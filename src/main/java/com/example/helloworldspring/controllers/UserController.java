@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -34,4 +32,25 @@ public class UserController {
     public ResponseEntity getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
+    @DeleteMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity deleteUser(Principal principal) {
+        String username = principal.getName();
+        userService.deleteUser(username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("/me")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity updateUser(Principal principal, @RequestBody UserDTO userDTO) {
+        String username = principal.getName();
+        return ResponseEntity.ok(userService.patchUser(username, userDTO));
+    }
+//
+//    @DeleteMapping("/{username}")
+//    @PreAuthorize("hasRole('ADMIN')")
+//    public ResponseEntity deleteUser(@PathVariable String username) {
+//        userService.deleteUser(username);
+//        return ResponseEntity.ok().build();
+//    }
 }
