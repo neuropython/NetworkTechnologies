@@ -41,11 +41,11 @@ public class LoansController {
 //    public @ResponseBody Iterable<Loans> getLoansByUser(@PathVariable Long userId){
 //        return loansService.getLoansByUser(userId);
 //    }
-//    @DeleteMapping("/{id}")
-//    @ResponseStatus(code = HttpStatus.NO_CONTENT)
-//    public void deleteLoans(@PathVariable Long id){
-//        loansService.deleteLoans(id);
-//    }
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void deleteLoans(@PathVariable Long id){
+        loansService.deleteLoan(id);
+    }
 //
 //    @PatchMapping("/{id}")
 //    public @ResponseBody Loans updateLoans(@PathVariable Long id, @RequestBody LoansDTO loansDTO){
