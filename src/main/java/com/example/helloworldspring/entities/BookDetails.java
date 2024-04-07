@@ -18,7 +18,7 @@ public class BookDetails {
         return book;
     }
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "bookId", nullable = false)
     private Book book;
     private String genre;
