@@ -23,6 +23,7 @@ public class BookController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(code = HttpStatus.CREATED) //code 201
     public @ResponseBody Book addBook(@RequestBody BookDTO bookDto) {
         if (bookDto.getIsbn() == null || bookDto.getTitle() == null || bookDto.getAuthor() == null
@@ -60,8 +61,8 @@ public class BookController {
         return bookService.getAllBooks();
     }
 
-    @GetMapping("/delete/{isbn}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @DeleteMapping("/delete/{isbn}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody void deleteBook(@PathVariable String isbn) {
         bookService.deleteBook(isbn);
     }
@@ -75,8 +76,8 @@ public class BookController {
         }
         return book;
     }
-    @GetMapping("/update/{isbn}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping("/update/{isbn}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public @ResponseBody Book updateBook(@PathVariable String isbn, @RequestBody BookDTO bookDto) {
         return bookService.updateBook(isbn, bookDto);
     }
