@@ -28,7 +28,7 @@ public class BookService {
         book.setYear(bookDTO.getYear());
         if (bookDTO.getAvailableCopies() == null) {
             book.setAvailableCopies(0L);
-        } else if (bookDTO.getAvailableCopies() < 0L) {
+        } else if (bookDTO.getAvailableCopies() < 0) {
             throw new CustomException(ExceptionCodes.BOOK_CANNOT_HAVE_NEGATIVE_AVAILABLE_COPIES);
 
         } else {
@@ -61,9 +61,9 @@ public class BookService {
         if (bookDto.getYear() != null) {
             existingBook.setYear(bookDto.getYear());
         }
-        if (bookDto.getAvailableCopies() != null && bookDto.getAvailableCopies() >= 0L) {
+        if (bookDto.getAvailableCopies() != null && bookDto.getAvailableCopies() >= 0) {
             existingBook.setAvailableCopies(bookDto.getAvailableCopies());
-        } else if (bookDto.getAvailableCopies() != null && bookDto.getAvailableCopies() < 0L) {
+        } else if (bookDto.getAvailableCopies() != null && bookDto.getAvailableCopies() < 0) {
             throw new CustomException(ExceptionCodes.BOOK_CANNOT_HAVE_NEGATIVE_AVAILABLE_COPIES);
         }
 
