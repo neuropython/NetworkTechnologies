@@ -56,6 +56,7 @@ public class LoansService {
         loan.setUser(user.get());
         loan.setBook(book.get());
         loan.setLoanDate(loansDTO.getLoanDate());
+        loan.setReturnDate(loansDTO.getReturnDate());
         loan.setDueDate(loansDTO.getDueDate());
         return loansRepository.save(loan);
     }
@@ -68,15 +69,23 @@ public class LoansService {
         loansRepository.delete(loan.get());
     }
 
-    public Loans updateLoan(Long loanId, LoansDTO loansDTO) {
-        Optional<Loans> loan = loansRepository.findById(Math.toIntExact(loanId));
-        if (loan.isEmpty()) {
-            throw new CustomException(ExceptionCodes.LOAN_WITH_ID_NOT_FOUND);
-        }
-        loan.get().setLoanDate(loansDTO.getLoanDate());
-        loan.get().setDueDate(loansDTO.getDueDate());
-        return loansRepository.save(loan.get());
+public Loans updateLoans(Long id, LoansDTO loansDTO) {
+    Optional<Loans> loanOptional = loansRepository.findById(Math.toIntExact(id));
+    if (!loanOptional.isPresent()) {
+        throw new CustomException(ExceptionCodes.LOAN_WITH_ID_NOT_FOUND);
     }
+    Loans loan = loanOptional.get();
+    if (loansDTO.getStatus() != null) {
+        loan.setStatus(loansDTO.getStatus());
+    }
+    if (loansDTO.getDueDate() != null) {
+        loan.setDueDate(loansDTO.getDueDate());
+    }
+    if (loansDTO.getReturnDate() != null) {
+        loan.setReturnDate(loansDTO.getReturnDate());
+    }
+    return loansRepository.save(loan);
+}
 
     public Loans getLoan(Long loanId) {
         Optional<Loans> loan = loansRepository.findById(Math.toIntExact(loanId));

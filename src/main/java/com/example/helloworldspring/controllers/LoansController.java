@@ -2,9 +2,11 @@ package com.example.helloworldspring.controllers;
 
 import com.example.helloworldspring.dto.LoansDTO;
 import com.example.helloworldspring.entities.Loans;
+import com.example.helloworldspring.exceptionHandlers.CustomException;
 import com.example.helloworldspring.services.LoansService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,11 +48,16 @@ public class LoansController {
     public void deleteLoans(@PathVariable Long id){
         loansService.deleteLoan(id);
     }
-//
-//    @PatchMapping("/{id}")
-//    public @ResponseBody Loans updateLoans(@PathVariable Long id, @RequestBody LoansDTO loansDTO){
-//        return loansService.updateLoans(id, loansDTO);
-//    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<Loans> updateLoans(@PathVariable Long id, @RequestBody LoansDTO loansDTO){
+        try {
+            Loans updatedLoan = loansService.updateLoans(id, loansDTO);
+            return new ResponseEntity<>(updatedLoan, HttpStatus.OK);
+        } catch (CustomException e) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 //
 
 }
