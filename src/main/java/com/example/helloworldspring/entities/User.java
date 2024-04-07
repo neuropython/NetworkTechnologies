@@ -67,11 +67,9 @@ public class User {
         this.role = role;
     }
 
-    @JsonIgnore
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }

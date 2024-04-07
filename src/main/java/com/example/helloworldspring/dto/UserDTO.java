@@ -11,9 +11,11 @@ public class UserDTO {
     private String name;
 
 
-    public UserDTO(String username) {
-        this.username = username;
-    }
+public UserDTO(String username, String email, String name) {
+    this.username = username;
+    this.email = email;
+    this.name = name;
+}
 
     public Long getUserId() {
         return userId;
@@ -43,8 +45,8 @@ public class UserDTO {
         return name;
     }
 
-    public void setName(String firstName) {
-        this.name = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

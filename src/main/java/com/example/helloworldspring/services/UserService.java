@@ -1,7 +1,6 @@
 package com.example.helloworldspring.services;
 
 import com.example.helloworldspring.dto.UserDTO;
-import com.example.helloworldspring.entities.AuthEntity;
 import com.example.helloworldspring.entities.User;
 import com.example.helloworldspring.repositories.AuthRepository;
 import com.example.helloworldspring.repositories.UserRepository;
@@ -24,23 +23,33 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User addUser(UserDTO userDTO){
-        User user = new User();
-        user.setName(userDTO.getName());
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setEmail(userDTO.getEmail());
-        user.setRole(userDTO.getRole());
-        return userRepository.save(user);
-    }
 
     public void deleteUser(Integer userId) {
         userRepository.deleteById(userId);
     }
-    public UserDTO getUser(String username) {
-        AuthEntity authEntity = authRepository.findById(Long.valueOf(username)).orElse(null);
-        User user = authEntity.getUser();
-
-        return new UserDTO(user.getUsername());
+    public User getUser(String username) {
+        return userRepository.findByUsername(username);
     }
+
+//    public UserDTO patchUser(String username, UserDTO userDTO) {
+//        User user = userRepository.findByUsername(username);
+//        if (userDTO.getName() != null) {
+//            user.setName(userDTO.getName());
+//        }
+//        if (userDTO.getEmail() != null) {
+//            user.setEmail(userDTO.getEmail());
+//        }
+//        if (userDTO.getUsername() != null) {
+//            user.setUsername(userDTO.getUsername());
+//        }
+//        userRepository.save(user);
+//        return new UserDTO(user.getUsername(), user.getEmail(), user.getName());
+//    }
+//
+//    public UserDTO DeleteUser(String username) {
+//        User user = userRepository.findByUsername(username);
+//        userRepository.delete(user);
+//        return new UserDTO(user.getUsername(), user.getEmail(), user.getName());
+//    }
+
 }
