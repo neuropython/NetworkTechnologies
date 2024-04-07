@@ -80,5 +80,9 @@ public class AuthEntity {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Long getId() {
+        return userId;
+    }
 }
 

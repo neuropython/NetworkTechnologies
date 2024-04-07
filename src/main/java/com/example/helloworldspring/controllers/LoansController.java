@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("/loans")
 public class LoansController {
@@ -59,6 +61,10 @@ public class LoansController {
         return loansService.getLoansByUserId(userId);
     }
 
-//
-
+    @GetMapping("/mine")
+    @PreAuthorize("isAuthenticated()")
+    public @ResponseBody Iterable<Loans> getMyLoans(Principal principal){
+        System.out.println(principal.getName());
+        return loansService.getLoansRelatedToMe(principal);
+    }
 }

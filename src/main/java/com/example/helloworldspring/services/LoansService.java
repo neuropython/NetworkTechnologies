@@ -1,6 +1,7 @@
 package com.example.helloworldspring.services;
 
 import com.example.helloworldspring.dto.LoansDTO;
+import com.example.helloworldspring.entities.AuthEntity;
 import com.example.helloworldspring.entities.Book;
 import com.example.helloworldspring.entities.User;
 import com.example.helloworldspring.exceptionHandlers.CustomException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.example.helloworldspring.repositories.LoansRepository;
 import com.example.helloworldspring.entities.Loans;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Service
@@ -105,8 +107,13 @@ public Loans updateLoans(Long id, LoansDTO loansDTO) {
         }
         return loansRepository.findByUser(user.get());
     }
-//    public Iterable<Loans> getLonsRelatedToMe() {
-//        return loansRepository.findByUser(authRepository.getLoggedInUser());
-//    }
+    public Iterable<Loans> getLoansRelatedToMe(Principal principal) {
+
+        Optional<User> user = Optional.ofNullable(userRepository.findByUsername(principal.getName()));
+        if (user.isEmpty()) {
+            throw new CustomException(ExceptionCodes.USER_NOT_FOUND);
+        }
+        return loansRepository.findByUser(user.get());
+    }
 
 }
