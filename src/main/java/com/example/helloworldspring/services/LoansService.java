@@ -28,8 +28,6 @@ public class LoansService {
     @Autowired
     private BookRepository bookRepository;
 
-    @Autowired
-    private AuthRepository authRepository;
 
     public Iterable<Loans> getAllLoans(){
         return loansRepository.findAll();
