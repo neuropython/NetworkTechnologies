@@ -10,6 +10,11 @@ public class UserDTO {
     private String role;
     private String name;
 
+
+    public UserDTO(String username) {
+        this.username = username;
+    }
+
     public Long getUserId() {
         return userId;
     }

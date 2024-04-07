@@ -1,13 +1,21 @@
 package com.example.helloworldspring.services;
 
 import com.example.helloworldspring.dto.UserDTO;
+import com.example.helloworldspring.entities.AuthEntity;
 import com.example.helloworldspring.entities.User;
+import com.example.helloworldspring.repositories.AuthRepository;
 import com.example.helloworldspring.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
+    private final AuthRepository authRepository;
+
+    @Autowired
+    public UserService(AuthRepository authRepository) {
+        this.authRepository = authRepository;
+    }
 
     @Autowired
     private UserRepository userRepository;
@@ -28,6 +36,11 @@ public class UserService {
 
     public void deleteUser(Integer userId) {
         userRepository.deleteById(userId);
+    }
+    public UserDTO getUser(String username) {
+        AuthEntity authEntity = authRepository.findById(Long.valueOf(username)).orElse(null);
+        User user = authEntity.getUser();
 
+        return new UserDTO(user.getUsername());
     }
 }
