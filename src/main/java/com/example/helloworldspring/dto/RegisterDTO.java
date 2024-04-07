@@ -3,6 +3,7 @@ package com.example.helloworldspring.dto;
 import com.example.helloworldspring.commonTypes.UserRole;
 
 public class RegisterDTO {
+    private String name;
     private String username;
 
     private String password;
@@ -50,4 +51,11 @@ public class RegisterDTO {
         this.role = role;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

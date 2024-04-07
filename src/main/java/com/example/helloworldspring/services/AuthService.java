@@ -36,6 +36,11 @@ public class AuthService {
     public RegisterResponseDTO register(RegisterDTO dto) {
         User user = new User();
         user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setUsername(dto.getUsername());
+        user.setRole(dto.getRole());
+
+
         userRepository.save(user);
 
         AuthEntity authEntity = new AuthEntity();
