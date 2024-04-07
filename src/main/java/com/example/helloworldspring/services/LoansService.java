@@ -62,7 +62,7 @@ public class LoansService {
 
     public void deleteLoan(Long loanId) {
         Optional<Loans> loan = loansRepository.findById(Math.toIntExact(loanId));
-        if (!loan.isPresent()) {
+        if (loan.isEmpty()) {
             throw new CustomException(ExceptionCodes.LOAN_WITH_ID_NOT_FOUND);
         }
         loansRepository.delete(loan.get());
@@ -70,7 +70,7 @@ public class LoansService {
 
     public Loans updateLoan(Long loanId, LoansDTO loansDTO) {
         Optional<Loans> loan = loansRepository.findById(Math.toIntExact(loanId));
-        if (!loan.isPresent()) {
+        if (loan.isEmpty()) {
             throw new CustomException(ExceptionCodes.LOAN_WITH_ID_NOT_FOUND);
         }
         loan.get().setLoanDate(loansDTO.getLoanDate());
@@ -80,11 +80,10 @@ public class LoansService {
 
     public Loans getLoan(Long loanId) {
         Optional<Loans> loan = loansRepository.findById(Math.toIntExact(loanId));
-        if (!loan.isPresent()) {
+        if (loan.isEmpty()) {
             throw new CustomException(ExceptionCodes.LOAN_WITH_ID_NOT_FOUND);
         }
         return loan.get();
     }
-
 
 }

@@ -30,7 +30,9 @@ public class LoansController {
         return loansService.addLoans(loansDTO);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @ResponseStatus(code = HttpStatus.OK)
     public @ResponseBody Loans getLoans(@PathVariable Long id){
         return loansService.getLoan(id);
     }
