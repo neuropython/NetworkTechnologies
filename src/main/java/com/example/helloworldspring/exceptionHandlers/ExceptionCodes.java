@@ -27,8 +27,9 @@ public enum ExceptionCodes {
     BOOK_WITH_ID_NOT_FOUND("Book with id not found"),
     LOAN_DATE_AFTER_DUE_DATE("Loan date is after due date"),
     USER_HAS_MAX_LOANS("User has max loans"),
+    REVIEW_NOT_FOUND("Review not found"),
 
-    REVIEW_NOT_FOUND("Review not found");
+    UNAUTHORIZED("Unauthorized");
 
 
 
