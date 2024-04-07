@@ -28,35 +28,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public JwtAuthenticationFilter(JwtService jwtService) {
         this.jwtService = jwtService;
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-            final String jwt;
             if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
-                return;
-            }
-            jwt = authorizationHeader.substring(7);
-            final String username = jwtService.getUsernameFromToken(jwt);
-            final String role = jwtService.extractRole(jwt).name().toString();
+                final String jwt = authorizationHeader.substring(7);
+                final String username = jwtService.getUsernameFromToken(jwt);
+                final String role = jwtService.extractRole(jwt).name();
 
-            if (username != null && !username.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
-                if (jwtService.isTokenValid(jwt)) {
-                    SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-                    UsernamePasswordAuthenticationToken authenticationToken = new
-                            UsernamePasswordAuthenticationToken(
-                            username,
-                            null,
-                            List.of(new SimpleGrantedAuthority(role)
-                            )
-                    );
-                    authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                    securityContext.setAuthentication(authenticationToken);
-                    SecurityContextHolder.setContext(securityContext);
+                if (username != null && !username.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    if (jwtService.isTokenValid(jwt)) {
+                        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                        UsernamePasswordAuthenticationToken authenticationToken = new
+                                UsernamePasswordAuthenticationToken(
+                                username,
+                                null,
+                                List.of(new SimpleGrantedAuthority(role)
+                                )
+                        );
+                        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        securityContext.setAuthentication(authenticationToken);
+                        SecurityContextHolder.setContext(securityContext);
+                    }
                 }
             }
-            filterChain.doFilter(request, response);
-        }catch (Exception e){
+        } catch (Exception e) {
+            System.out.println("Error during JWT authentication: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
             filterChain.doFilter(request, response);
         }
     }
