@@ -40,10 +40,22 @@ public class ReviewsController {
         return reviewsService.getReviewById(id);
     }
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void deleteReviewById(@PathVariable Long id, Principal principal){
         reviewsService.deleteReviewById(id, principal.getName());
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
+    public void updateReviewById(@PathVariable Long id, @RequestBody ReviewsDTO reviewsDTO, Principal principal){
+        reviewsService.updateReviewById(id, reviewsDTO, principal.getName());
+    }
+
+    @GetMapping("/mine")
+    @PreAuthorize("isAuthenticated()")
+    public @ResponseBody Iterable<Reviews> getMyReviews(Principal principal){
+        return reviewsService.getMyReviews(principal.getName());
     }
 
 }

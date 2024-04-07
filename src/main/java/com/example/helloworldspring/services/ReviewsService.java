@@ -69,6 +69,14 @@ public class ReviewsService {
 //        return reviewsRepository.findByBookId(bookId);
 //    }
 
+    public Iterable<Reviews> getMyReviews(String username){
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new CustomException(ExceptionCodes.USER_NOT_FOUND);
+        }
+        return reviewsRepository.findByUser_userId(user.getUserId());
+    }
+
 
 
 
