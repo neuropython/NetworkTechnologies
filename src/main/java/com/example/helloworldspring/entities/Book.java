@@ -1,10 +1,8 @@
 package com.example.helloworldspring.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 public class Book {
@@ -24,6 +22,11 @@ public class Book {
     private Long year;
 
     private Long availableCopies;
+
+    @Column(length = 3000)
+    private String img;
+    @Column(length = 3000)
+    private String descryption;
 
     public Long getBookId() {
         return bookId;
@@ -79,5 +82,21 @@ public class Book {
 
     public void setAvailableCopies(Long availableCopies) {
         this.availableCopies = availableCopies;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getDescryption() {
+        return descryption;
+    }
+
+    public void setDescryption(String descryption) {
+        this.descryption = descryption;
     }
 }

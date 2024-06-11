@@ -14,6 +14,8 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/loans")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class LoansController {
     private final LoansService loansService;
 
@@ -94,4 +96,5 @@ public class LoansController {
         System.out.println(principal.getName());
         return loansService.getLoansRelatedToMe(principal);
     }
+
 }

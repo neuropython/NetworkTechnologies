@@ -97,4 +97,7 @@ public class User {
         this.authEntity = authEntity;
     }
 
+    public Long getId() {
+        return userId;
+    }
 }

@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ReviewsRepository extends CrudRepository<Reviews, Integer> {
     Iterable<Reviews> findByUser_userId(Long userId);
+    Iterable<Reviews> findByBook_bookId(Long bookId);
 }

@@ -13,6 +13,8 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/users")
 @PreAuthorize("isAuthenticated()")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class UserController {
     private final UserService userService;
 
@@ -27,7 +29,8 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity getMe(Principal principal) {
         String username = principal.getName();
-        return ResponseEntity.ok(userService.getUser(username));
+        Long id = userService.getUser(username).getId();
+        return ResponseEntity.ok(id);
     }
     /**
      * Get all users

@@ -12,6 +12,7 @@ import com.example.helloworldspring.services.BookService;
 import static com.example.helloworldspring.exceptionHandlers.ExceptionCodes.BOOK_NOT_FOUND;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/book")
 public class BookController {
 
@@ -26,6 +27,7 @@ public class BookController {
      * @return
      */
     @PostMapping("/add")
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(code = HttpStatus.CREATED) //code 201
     public @ResponseBody Book addBook(@RequestBody BookDTO bookDto) {
@@ -50,6 +52,12 @@ public class BookController {
             }
             if (bookDto.getAvailableCopies() == null) {
                 errorMessage.append("availableCopies, ");
+            }
+            if (bookDto.getImg() == null) {
+                errorMessage.append("img, ");
+            }
+            if (bookDto.getDescryption() == null) {
+                errorMessage.append("descryption, ");
             }
             errorMessage.delete(errorMessage.length() - 2, errorMessage.length());
             throw new IllegalArgumentException(errorMessage.toString());

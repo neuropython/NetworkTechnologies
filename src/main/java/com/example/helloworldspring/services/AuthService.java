@@ -20,7 +20,6 @@ public class AuthService {
     private final AuthRepository authRepository;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
     private final JwtService jwtService;
     @Autowired
     private BlacklistedTokensRepository blacklistedTokensRepository;
@@ -66,10 +65,11 @@ public class AuthService {
         if (!passwordEncoder.matches(dto.getPassword(), authEntity.getPassword())) {
             throw new CustomException(ExceptionCodes.INVALID_CREDENTIALS);
         }
+        String role = authEntity.getRole().toString();
 
         String token = jwtService.generateToken(authEntity);
 
-        return new LoginResponseDTO(token);
+        return new LoginResponseDTO(token, role);
     }
     @Transactional
     public void logout(String token) {

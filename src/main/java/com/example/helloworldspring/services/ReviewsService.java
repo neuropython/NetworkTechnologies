@@ -77,6 +77,12 @@ public class ReviewsService {
         return reviewsRepository.findByUser_userId(user.getUserId());
     }
 
+    public Iterable<Reviews> getReviewsByBookId(Long bookId){
+        return reviewsRepository.findByBook_bookId(bookId);
+    }
+
+
+
 
 
 

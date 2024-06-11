@@ -12,6 +12,8 @@ import java.security.Principal;
 
 @RestController
 @RequestMapping("/reviews")
+@CrossOrigin(origins = "http://localhost:3000")
+
 public class ReviewsController {
     private final ReviewsService reviewsService;
 
@@ -79,4 +81,9 @@ public class ReviewsController {
         return reviewsService.getMyReviews(principal.getName());
     }
 
+    @GetMapping("/book/{bookId}")
+    @PreAuthorize("permitAll()")
+    public @ResponseBody Iterable<Reviews> getReviewsByBookId(@PathVariable Long bookId){
+        return reviewsService.getReviewsByBookId(bookId);
+    }
 }

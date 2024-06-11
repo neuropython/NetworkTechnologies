@@ -26,6 +26,8 @@ public class BookService {
         book.setAuthor(bookDTO.getAuthor());
         book.setPublisher(bookDTO.getPublisher());
         book.setYear(bookDTO.getYear());
+        book.setImg(bookDTO.getImg());
+        book.setDescryption(bookDTO.getDescryption());
         if (bookDTO.getAvailableCopies() == null) {
             book.setAvailableCopies(0L);
         } else if (bookDTO.getAvailableCopies() < 0) {
@@ -60,6 +62,12 @@ public class BookService {
         }
         if (bookDto.getYear() != null) {
             existingBook.setYear(bookDto.getYear());
+        }
+        if (bookDto.getImg() != null) {
+            existingBook.setImg(bookDto.getImg());
+        }
+        if (bookDto.getDescryption() != null) {
+            existingBook.setDescryption(bookDto.getDescryption());
         }
         if (bookDto.getAvailableCopies() != null && bookDto.getAvailableCopies() >= 0) {
             existingBook.setAvailableCopies(bookDto.getAvailableCopies());

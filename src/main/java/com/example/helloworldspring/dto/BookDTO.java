@@ -1,5 +1,7 @@
 package com.example.helloworldspring.dto;
 
+import jakarta.persistence.Column;
+
 public class BookDTO {
     private Long bookId;
     private String isbn;
@@ -8,6 +10,11 @@ public class BookDTO {
     private String publisher;
     private Long year;
     private Long availableCopies;
+    @Column(columnDefinition = "TEXT", length = 10485760)
+    private String img;
+    @Column(columnDefinition = "TEXT", length = 10485760)
+    private String descryption;
+
 
     public Long getBookId() {
         return bookId;
@@ -64,4 +71,21 @@ public class BookDTO {
     public void setAvailableCopies(Long availableCopies) {
         this.availableCopies = availableCopies;
     }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getDescryption() {
+        return descryption;
+    }
+
+    public void setDescryption(String descryption) {
+        this.descryption = descryption;
+    }
+
 }
